@@ -1,5 +1,6 @@
 import java.util.Scanner;
 //Hello From Eyad
+//hello from mariam
 
 public class Main {
     //methods
