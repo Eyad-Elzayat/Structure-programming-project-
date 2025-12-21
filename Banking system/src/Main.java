@@ -32,6 +32,7 @@ public class Main {
         int[] withdrawalsCount = new int[maxUsers];
 
 
+
         //Checking if the user have account
         System.out.println("1- Enter to my account");
         System.out.println("2- Create new account");
