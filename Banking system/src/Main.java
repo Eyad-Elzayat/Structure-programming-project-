@@ -3,20 +3,120 @@ import java.util.Scanner;
 
 public class Main {
     //methods
-    public static void accountCreation(){
-        System.out.println("Created");
+    public static void accountCreation(int[] account , int[] accountType,double[] amount ,String[] name) {
+        int index = 0;
+        for (int i = 0; i < account.length; i++) {
+            if (account[i] == 0) {
+                index = i;
+                break;
+            }
+        }
+        int accountnumber = 1000+index;
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter account name: ");
+        name[index] = input.nextLine();
+        System.out.print("Choose your account type\n1-Checking\n2-Saving\nEnter account type: ");
+        accountType[index] = input.nextInt();
+        if (accountType[index] == 2) {
+            System.out.print("Enter amount: ");
+            amount[index] = input.nextDouble();
+            if (amount[index] >= 100) {
+                account[index] = ++accountnumber;
+                System.out.println("Saving account created successfully");
+                System.out.println("Accountnumber:" + account[index]);
+                System.out.println("Accounttype:" + "saving");
+                System.out.println("Balance:" + amount[index]);
+            } else {
+                System.out.println("Cannot create saving account\nMinimum amount is 100");
+            }
+        } else if (accountType[index] == 1) {
+            System.out.println("Enter amount:");
+            account[index] = ++accountnumber;
+            amount[index] = input.nextDouble();
+            System.out.println("Checking account created successfully");
+            System.out.println("Account number=" + account[index]);
+            System.out.println("Account type:" + "checking");
+            System.out.println("Balance:" + amount[index]);
+        } else {
+            System.out.println("invalid account type");
+        }
     }
-    public static void depositMoney(){
-
+    public static void depositMoney(int accountNum,double[] balance){
+        Scanner sc = new Scanner(System.in);
+        int index = accountNum-1001;
+        System.out.println("Enter amount: ");
+        double addedAmount = sc.nextDouble();
+        balance[index] += addedAmount;
     }
-    public static void withdrawMoney(){
+    public static void withdrawMoney(int accountNum,int type ,int[] withdrawCnt,double[] balance){
+        Scanner sc = new Scanner(System.in);
+        int index = accountNum-1001;
 
+        if (type == 1) {
+            System.out.print("Enter the amount: ");
+            double amount = sc.nextDouble();
+            if (balance[index] >= amount) {
+                balance[index] -= amount;
+                withdrawCnt[index]++;
+            }else {
+                System.out.println("this amount is not available");
+            }
+        } else if (type == 2) {
+            if (withdrawCnt[index] < 3) {
+                System.out.print("Enter the amount: ");
+                double amount = sc.nextDouble();
+                if ((balance[index] - amount) >= 100) {
+                    balance[index] -= amount;
+                    withdrawCnt[index]++;
+                }else{
+                    System.out.println("Savings accounts cannot drop below $100");
+                }
+            }else {
+                System.out.println("\"Error: Limit Reached\"5555");
+            }
+        }
     }
-    public static void transferFunds(){
-
+    public static void transferFunds(int accountNum,int type ,double[] balance,int[] accounts){
+        Scanner sc = new Scanner(System.in);
+        int sourceIndex = accountNum-1001;
+        System.out.println("Enter Destination Account: ");
+        int destination = sc.nextInt();
+        for (int i = 0; i < accounts.length; i++) {
+            if (destination == accounts[i]) {
+                int destIndex = destination-1001;
+                if (type == 1) {
+                    System.out.print("Enter the amount: ");
+                    double amount = sc.nextDouble();
+                    if (balance[sourceIndex] >= amount) {
+                        balance[sourceIndex] -= amount;
+                        balance[destIndex] += amount;
+                        System.out.println(balance[sourceIndex]);
+                        System.out.println(balance[destIndex]);
+                    }else {
+                        System.out.println("This amount doesn't exist");
+                    }
+                } else if (type == 2) {
+                    System.out.print("Enter the amount: ");
+                    double amount = sc.nextDouble();
+                    if ((balance[sourceIndex] - amount) >= 100) {
+                        balance[sourceIndex] -= amount;
+                        balance[destIndex] += amount;
+                        System.out.println(balance[sourceIndex]);
+                        System.out.println(balance[destIndex]);
+                    }else{
+                        System.out.println("Savings accounts cannot drop below $100");
+                    }
+                }
+            }
+        }
     }
-    public static void interestCal(){
-
+    public static void interestCal(int[] accNums ,int[] accTypes,double[] balance){
+        for (int i = 0; i < accNums.length; i++) {
+            if (accTypes[i] == 2) {
+                balance[i] *= 0.02;
+                System.out.println("Interest applied to Account #" + accNums[i]);
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -27,8 +127,8 @@ public class Main {
         int maxUsers = 50;
         int[] accountNumbers = new int[maxUsers];
         String[] accountNames = new String[maxUsers];
-        double[] balances = new double[maxUsers];
         int[] accountTypes = new int[maxUsers];
+        double[] balances = new double[maxUsers];
         int[] withdrawalsCount = new int[maxUsers];
 
 
@@ -52,36 +152,25 @@ public class Main {
                         System.out.println("3. Transfer Funds");
                         int operation = sc.nextInt();
                         if (operation == 1) {
-                            depositMoney();
+                            depositMoney(accountNumbers[i],balances);
+                            System.out.println("The new balance: " + balances[i]);
                         }else if (operation == 2) {
-                            withdrawMoney();
+                            withdrawMoney(accountNumbers[i],accountTypes[i],withdrawalsCount,balances);
                         }else if (operation == 3) {
-                            transferFunds();
+                            transferFunds(accountNumbers[i],accountTypes[i],balances,accountNumbers);
                         }else {
                             System.out.println("This operation is not found, please try again");
-                        }
-                        break;
-                    } else {
-                        System.out.println("this account number doesn't exist");
-                        System.out.println("1-Create new account");
-                        System.out.println("2-Exit");
-                        int CreateOrExit = sc.nextInt();
-                        if (CreateOrExit == 1) {
-                            accountCreation();
-                            break;
-                        } else if (CreateOrExit == 2) {
-                            system = true;
-                            break;
                         }
                     }
                 }
 
             } else if (checking == 2) {
-                accountCreation();
+                accountCreation(accountNumbers,accountTypes,balances,accountNames);
             } else if (checking == 3) {
                 System.out.println("Thank you");
                 system = true;
             }
+            interestCal(accountNumbers,accountTypes,balances);
         }
     }
 }
