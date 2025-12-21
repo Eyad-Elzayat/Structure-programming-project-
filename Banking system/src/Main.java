@@ -30,29 +30,5 @@ public class Main {
         double[] balances = new double[maxUsers];
         int[] accountTypes = new int[maxUsers];
         int[] withdrawalsCount = new int[maxUsers];
-
-        //main functions
-        System.out.println("Please select the operation you want: ");
-        System.out.println("1. Account Creation");
-        System.out.println("2. Deposit Money");
-        System.out.println("3. Withdraw Money");
-        System.out.println("4. Transfer Funds");
-        System.out.println("5. Interest Calculator");
-
-        int operation  = sc.nextInt();
-
-        if (operation == 1) {
-            accountCreation();
-        }else if (operation == 2) {
-            depositMoney();
-        }else if (operation == 3) {
-            withdrawMoney();
-        }else if (operation == 4) {
-            transferFunds();
-        }else if (operation == 5) {
-            interestCal();
-        }else {
-            System.out.println("This operation is not found, please try again");
-        }
     }
 }
