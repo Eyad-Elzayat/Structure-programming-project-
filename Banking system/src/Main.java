@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
     //methods
     public static void accountCreation(){
-
+        System.out.println("Created");
     }
     public static void depositMoney(){
 
@@ -30,5 +30,51 @@ public class Main {
         double[] balances = new double[maxUsers];
         int[] accountTypes = new int[maxUsers];
         int[] withdrawalsCount = new int[maxUsers];
+
+
+
+        //Checking if the user have account
+        System.out.println("1- Enter to my account");
+        System.out.println("2- Create new account");
+
+        int checking = sc.nextInt();
+        if (checking == 1) {
+            System.out.print("Enter your account number: ");
+            int accountExist = sc.nextInt();
+            for (int i = 0; i < accountNumbers.length; i++) {
+                if (accountNumbers[i] == accountExist) {
+                    System.out.println("Welcome to AIU Bank");
+                    System.out.println("Please select the operation you want: ");
+                    System.out.println("1. Deposit Money");
+                    System.out.println("2. Withdraw Money");
+                    System.out.println("3. Transfer Funds");
+                    int operation = sc.nextInt();
+                    if (operation == 1) {
+                        depositMoney();
+                    }else if (operation == 2) {
+                        withdrawMoney();
+                    }else if (operation == 3) {
+                        transferFunds();
+                    }else {
+                        System.out.println("This operation is not found, please try again");
+                    }
+                    break;
+                } else {
+                    System.out.println("this account number doesn't exist");
+                    System.out.println("1-Create new account");
+                    System.out.println("2-Exit");
+                    int CreateOrExit = sc.nextInt();
+                    if (CreateOrExit == 1) {
+                        accountCreation();
+                        break;
+                    } else if (CreateOrExit == 2) {
+                        break;
+                    }
+                }
+            }
+
+        } else if (checking == 2) {
+            accountCreation();
+        }
     }
 }
