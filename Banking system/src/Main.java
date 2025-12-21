@@ -1,80 +1,165 @@
-import java.util.Scanner;
-//Hello From Eyad
+import javax.swing.JOptionPane;
 
 public class Main {
+
+
+    //Eyad Mahmoud Ebrahim Elzayat 25102344
+    //maryam ibrahem abd alsabor  25102374
+    //Haitham hesham 25102329
+    //Mariyam Ahmed Mohammed Kholafa  25102365
+    //Omar Tarekk 25102370
+
+
     //methods
-    public static void accountCreation(){
-        System.out.println("Created");
-    }
-    public static void depositMoney(){
+    public static void accountCreation(int[] account , int[] accountType,double[] amount ,String[] name) {
+        int index = 0;
+        for (int i = 0; i < account.length; i++) {
+            if (account[i] == 0) {
+                index = i;
+                break;
+            }
+        }
+        int accountnumber = 1000+index;
+        name[index]= JOptionPane.showInputDialog("Enter account name: ");
 
-    }
-    public static void withdrawMoney(){
+        String accType = JOptionPane.showInputDialog("Choose your account type\n1-Checking\n2-Saving\nEnter account type: ");
+        accountType[index] = Integer.parseInt(accType);
 
-    }
-    public static void transferFunds(){
+        if (accountType[index] == 2) {
+            String amount1 = JOptionPane.showInputDialog("Enter the amount: ");
+            amount[index] = Double.parseDouble(amount1);
+            if (amount[index] >= 100) {
+                account[index] = ++accountnumber;
+                JOptionPane.showMessageDialog(null, "Saving account created successfully \n Accountnumber:" + account[index] +" \nAccounttype: saving\n Balance: " + amount[index]);
+            } else {
+                JOptionPane.showMessageDialog(null,"Cannot create saving account\nMinimum amount is 100");
 
+            }
+        } else if (accountType[index] == 1) {
+            String amount1 = JOptionPane.showInputDialog("Enter the amount: ");
+            amount[index] = Double.parseDouble(amount1);
+            account[index] = ++accountnumber;
+            JOptionPane.showMessageDialog(null, "Saving account created successfully \n Accountnumber:" + account[index] +" \nAccounttype: Checking\n Balance: " + amount[index]);
+        } else {
+            JOptionPane.showMessageDialog(null,"invalid account type");
+        }
     }
-    public static void interestCal(){
+    public static void depositMoney(int accountNum,double[] balance){
+        int index = accountNum-1001;
+        String addedAmount1 = JOptionPane.showInputDialog("Enter the amount: ");
+        double addedAmount = Double.parseDouble(addedAmount1);
+        balance[index] += addedAmount;
+    }
+    public static void withdrawMoney(int accountNum,int type ,int[] withdrawCnt,double[] balance){
+        int index = accountNum-1001;
 
+        if (type == 1) {
+            String amount1 = JOptionPane.showInputDialog("Enter the amount: ");
+            double amount = Double.parseDouble(amount1);
+            if (balance[index] >= amount) {
+                balance[index] -= amount;
+                withdrawCnt[index]++;
+            }else {
+                JOptionPane.showMessageDialog(null,"this amount is not available");
+            }
+        } else if (type == 2) {
+            if (withdrawCnt[index] < 3) {
+                String amount1 = JOptionPane.showInputDialog("Enter the amount: ");
+                double amount = Double.parseDouble(amount1);
+                if ((balance[index] - amount) >= 100) {
+                    balance[index] -= amount;
+                    withdrawCnt[index]++;
+                }else{
+                    JOptionPane.showMessageDialog(null,"Savings accounts cannot drop below $100");
+                }
+            }else {
+                JOptionPane.showMessageDialog(null,"\"Error: Limit Reached\"5555");
+            }
+        }
+    }
+    public static void transferFunds(int accountNum,int type ,double[] balance,int[] accounts){
+        int sourceIndex = accountNum-1001;
+        String dest = JOptionPane.showInputDialog("Enter Destination Account: ");
+        int destination = Integer.parseInt(dest);
+        for (int i = 0; i < accounts.length; i++) {
+            if (destination == accounts[i]) {
+                int destIndex = destination-1001;
+                if (type == 1) {
+                    String amount1 = JOptionPane.showInputDialog("Enter the amount: ");
+                    double amount = Double.parseDouble(amount1);
+                    if (balance[sourceIndex] >= amount) {
+                        balance[sourceIndex] -= amount;
+                        balance[destIndex] += amount;
+                    }else {
+                        JOptionPane.showMessageDialog(null,"This amount doesn't exist");
+                    }
+                } else if (type == 2) {
+                    String amount1 = JOptionPane.showInputDialog("Enter the amount: ");
+                    double amount = Double.parseDouble(amount1);
+                    if ((balance[sourceIndex] - amount) >= 100) {
+                        balance[sourceIndex] -= amount;
+                        balance[destIndex] += amount;
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Savings accounts cannot drop below $100");
+                    }
+                }
+            }
+        }
+    }
+    public static void interestCal(int[] accNums ,int[] accTypes,double[] balance){
+        for (int i = 0; i < accNums.length; i++) {
+            if (accTypes[i] == 2) {
+                balance[i] *= 0.02;
+                JOptionPane.showMessageDialog(null,"Interest applied to Account #" + accNums[i]);
+            }
+        }
     }
 
     public static void main(String[] args) {
         //setting up scanner
-        Scanner sc = new Scanner(System.in);
 
         //setting up main data structure
         int maxUsers = 50;
         int[] accountNumbers = new int[maxUsers];
         String[] accountNames = new String[maxUsers];
-        double[] balances = new double[maxUsers];
         int[] accountTypes = new int[maxUsers];
+        double[] balances = new double[maxUsers];
         int[] withdrawalsCount = new int[maxUsers];
 
 
 
         //Checking if the user have account
-        System.out.println("1- Enter to my account");
-        System.out.println("2- Create new account");
-
-        int checking = sc.nextInt();
-        if (checking == 1) {
-            System.out.print("Enter your account number: ");
-            int accountExist = sc.nextInt();
-            for (int i = 0; i < accountNumbers.length; i++) {
-                if (accountNumbers[i] == accountExist) {
-                    System.out.println("Welcome to AIU Bank");
-                    System.out.println("Please select the operation you want: ");
-                    System.out.println("1. Deposit Money");
-                    System.out.println("2. Withdraw Money");
-                    System.out.println("3. Transfer Funds");
-                    int operation = sc.nextInt();
-                    if (operation == 1) {
-                        depositMoney();
-                    }else if (operation == 2) {
-                        withdrawMoney();
-                    }else if (operation == 3) {
-                        transferFunds();
-                    }else {
-                        System.out.println("This operation is not found, please try again");
-                    }
-                    break;
-                } else {
-                    System.out.println("this account number doesn't exist");
-                    System.out.println("1-Create new account");
-                    System.out.println("2-Exit");
-                    int CreateOrExit = sc.nextInt();
-                    if (CreateOrExit == 1) {
-                        accountCreation();
-                        break;
-                    } else if (CreateOrExit == 2) {
-                        break;
+        boolean system = false;
+        while (system == false){
+            String checking1 = JOptionPane.showInputDialog("1-Enter to my account\n2-Create new account\n3-Exit");
+            int checking = Integer.parseInt(checking1);
+            if (checking == 1) {
+                String accountExist1 = JOptionPane.showInputDialog("Enter your account number: ");
+                int accountExist = Integer.parseInt(accountExist1);
+                for (int i = 0; i < accountNumbers.length; i++) {
+                    if (accountNumbers[i] == accountExist) {
+                        String operation1 = JOptionPane.showInputDialog("Welcome to AIU Bank\nPlease select the operation you want: \n1. Deposit Money\n2. Withdraw Money\n3. Transfer Funds");
+                        int operation = Integer.parseInt(operation1);
+                        if (operation == 1) {
+                            depositMoney(accountNumbers[i],balances);
+                            JOptionPane.showMessageDialog(null,"The new balance: " + balances[i]);
+                        }else if (operation == 2) {
+                            withdrawMoney(accountNumbers[i],accountTypes[i],withdrawalsCount,balances);
+                        }else if (operation == 3) {
+                            transferFunds(accountNumbers[i],accountTypes[i],balances,accountNumbers);
+                        }else {
+                            JOptionPane.showMessageDialog(null,"This operation is not found, please try again");
+                        }
                     }
                 }
-            }
 
-        } else if (checking == 2) {
-            accountCreation();
+            } else if (checking == 2) {
+                accountCreation(accountNumbers,accountTypes,balances,accountNames);
+            } else if (checking == 3) {
+                JOptionPane.showMessageDialog(null,"Thank you");
+                system = true;
+            }
+            interestCal(accountNumbers,accountTypes,balances);
         }
     }
 }
