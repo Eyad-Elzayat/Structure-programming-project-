@@ -147,9 +147,35 @@ public class Main {
             }
         }
     }
+    //admin Method
+    public static void adminMethod(int users,String[] names,int[] nums,int[] types,int[] withdraw,double[] balance){
+        int index = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                index = i;
+                break;
+            }
+        }
+        int numOfUsers =  index;
+        if (numOfUsers == 0) {
+            JOptionPane.showMessageDialog(null,"No users yet");
+        }else {
+            for (int i = 0; i < numOfUsers; i++) {
+                JOptionPane.showMessageDialog(null,
+                        "Number of users = " + numOfUsers+ "\n"
+                                + "Account Number :" + nums[i]+ "\n"
+                                + "Name :" + names[i]+ "\n"
+                                + "Type :" + types[i]+ "\n"
+                                + "Withdraw count :" + withdraw[i] + "\n"
+                                + "Balance :" + balance[i] + "\n"
+                );
+            }
+        }
+    }
+
+/// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Main method
-
     public static void main(String[] args) {
         //setting up scanner
         //setting up main data structure
@@ -167,7 +193,7 @@ public class Main {
             //1 for login and do the main methods
             //2 for creating new account
             //3 for ending the process and closing the program
-            String checking1 = JOptionPane.showInputDialog("1-Enter to my account\n2-Create new account\n3-Exit");
+            String checking1 = JOptionPane.showInputDialog("1-Enter to my account\n2-Create new account\n3-Admin account\n4-Exit");
             int checking = Integer.parseInt(checking1);
             if (checking == 1) {
                 String accountExist1 = JOptionPane.showInputDialog("Enter your account number: ");
@@ -201,6 +227,8 @@ public class Main {
                 //this method is here because i don't know when to insert the new annualy money and it not mentioned with a time for this case
                 interestCal(accountNumbers,accountTypes,balances);
             } else if (checking == 3) {
+                adminMethod(maxUsers,accountNames,accountNumbers,accountTypes,withdrawalsCount,balances);
+            } else if (checking == 4) {
                 JOptionPane.showMessageDialog(null,"Thank you");
                 system = true;
             }
